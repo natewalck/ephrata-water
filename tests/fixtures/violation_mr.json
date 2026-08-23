@@ -1,0 +1,11 @@
+{
+  "violation_id": "1920137",
+  "violation_code": "27",
+  "violation_category_code": "MR",
+  "is_health_based_ind": "N",
+  "contaminant_code": "2920",
+  "compl_per_begin_date": "2019-01-01 00:00:00",
+  "compl_per_end_date": "2019-03-31 00:00:00",
+  "rtc_date": "2019-05-01 00:00:00",
+  "rule_code": "210"
+}
