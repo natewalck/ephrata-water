@@ -1,0 +1,48 @@
+name: publish
+on:
+  schedule:
+    - cron: "17 9 * * 1" # Mondays 09:17 UTC; data is fetched fresh at build time
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  # Never cancel a mid-flight production deploy; let it finish and queue the next.
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --locked
+      - run: uv run ruff check pipeline tests
+      - run: uv run pytest -q
+
+  publish:
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --locked
+      # Fetch fresh data into the artifact; nothing is committed back to the
+      # repo. A non-zero exit means no usable payload was produced -- skip the
+      # deploy and leave the previously published site standing.
+      - run: uv run python -m pipeline.build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4
