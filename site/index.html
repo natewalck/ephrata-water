@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ephrata Water — is our water safe?</title>
+<meta name="description" content="Water safety and test results for Ephrata Borough, PA, explained in plain language from official EPA and PA DEP data.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="viz-root">
+  <header>
+    <h1>Ephrata Water</h1>
+    <p class="tagline">Official water-safety data for Ephrata Borough, PA — explained in plain language.</p>
+  </header>
+
+  <div id="unavailable" class="banner" hidden>
+    <span aria-hidden="true">⚠</span>
+    <span>Some data sources could not be reached at the last update. Panels may be incomplete.</span>
+  </div>
+
+  <section id="verdict" class="card verdict" aria-live="polite">
+    <p class="loading">Loading current status…</p>
+    <noscript><p>This page needs JavaScript to display current data. For the official
+    annual report, see the Ephrata Area Joint Authority link below.</p></noscript>
+  </section>
+
+  <section aria-label="Water system facts">
+    <div id="tiles" class="tiles"></div>
+  </section>
+
+  <section class="card">
+    <h2>Violations on record, in plain English</h2>
+    <p class="section-note">EPA keeps roughly ten years of history. A “violation” is any missed
+    requirement — most are paperwork (a late test or report), not unsafe water. Health-based
+    violations, where a measured level actually exceeded a legal limit, are marked distinctly.</p>
+    <ol id="violations" class="violations"></ol>
+  </section>
+
+  <section class="card">
+    <h2>About this data</h2>
+    <p>Ephrata Borough’s tap water comes from the <strong>Ephrata Area Joint Authority</strong>
+    (system ID <code>PA7360045</code>), drawn roughly half from Cocalico Creek and half from
+    groundwater wells. This page is built automatically from public regulatory data and is not
+    an official publication of EAJA, EPA, or PA DEP. For the authority’s own annual report, see
+    <a href="https://www.ephrataboro.org/2146/Ephrata-Area-Joint-Authority-EAJA">ephrataboro.org</a>.</p>
+    <ul id="sources" class="sources"></ul>
+  </section>
+</main>
+<script src="app.js" type="module"></script>
+</body>
+</html>
