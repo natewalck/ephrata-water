@@ -1,0 +1,8 @@
+[
+ {"pwsid": "PA7360045", "sample_id": "PBCU09201605042", "contaminant_code": "PB90", "sample_measure": 0, "unit_of_measure": "mg/L", "result_sign_code": null, "sar_id": 1},
+ {"pwsid": "PA7360045", "sample_id": "PBCU09201904962", "contaminant_code": "PB90", "sample_measure": "0", "unit_of_measure": "mg/L", "result_sign_code": "L", "sar_id": 2},
+ {"pwsid": "PA7360045", "sample_id": "PBCU09202204914", "contaminant_code": "PB90", "sample_measure": 0.00121, "unit_of_measure": "mg/L", "result_sign_code": null, "sar_id": 3},
+ {"pwsid": "PA7360045", "sample_id": "PBCU09202504858", "contaminant_code": "PB90", "sample_measure": "0.00152", "unit_of_measure": "mg/L", "result_sign_code": null, "sar_id": 4},
+ {"pwsid": "PA7360045", "sample_id": "S-NOJOIN", "contaminant_code": "PB90", "sample_measure": 0.5, "unit_of_measure": "mg/L", "result_sign_code": null, "sar_id": 5},
+ {"pwsid": "PA7360045", "sample_id": "PBCU09202504858", "contaminant_code": "WQ01", "sample_measure": 7.0, "unit_of_measure": "mg/L", "result_sign_code": null, "sar_id": 6}
+]
