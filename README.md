@@ -3,6 +3,8 @@
 Water safety data for Ephrata Borough, PA — fetched from official sources, explained in
 plain language, and published as a static dashboard for non-technical readers.
 
+**Live dashboard: <https://natewalck.github.io/ephrata-water/>**
+
 Ephrata Borough's tap water comes from the **Ephrata Area Joint Authority** (EAJA,
 PWSID `PA7360045`), a community system serving ~24,500 people from Cocalico Creek and
 groundwater wells. This site is generated from public regulatory data; it is not an
