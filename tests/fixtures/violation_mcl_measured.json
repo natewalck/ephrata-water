@@ -1,0 +1,15 @@
+{
+ "pwsid": "PA7360045",
+ "violation_id": "9999999",
+ "violation_code": "02",
+ "violation_category_code": "MCL",
+ "is_health_based_ind": "Y",
+ "contaminant_code": "1030",
+ "viol_measure": "0.021",
+ "unit_of_measure": "mg/L",
+ "state_mcl": 0.015,
+ "compl_per_begin_date": "2030-01-01 00:00:00",
+ "compl_per_end_date": "2030-03-31 00:00:00",
+ "rtc_date": null,
+ "rule_code": "410"
+}

@@ -1,0 +1,7 @@
+[
+ {"pwsid": "PA7360045", "sample_id": "PBCU09201605042", "sampling_start_date": "2016-06-01 00:00:00", "sampling_end_date": "2016-09-30 00:00:00"},
+ {"pwsid": "PA7360045", "sample_id": "PBCU09201904962", "sampling_start_date": "2019-06-01 00:00:00", "sampling_end_date": "2019-09-30 00:00:00"},
+ {"pwsid": "PA7360045", "sample_id": "PBCU09202204914", "sampling_start_date": "2022-06-01 00:00:00", "sampling_end_date": "2022-09-30 00:00:00"},
+ {"pwsid": "PA7360045", "sample_id": "PBCU09202504858", "sampling_start_date": "2025-06-01 00:00:00", "sampling_end_date": "2025-09-30 00:00:00"},
+ {"pwsid": "PA7360045", "sample_id": "S-ORPHAN", "sampling_start_date": "2013-06-01 00:00:00", "sampling_end_date": "2013-09-30 00:00:00"}
+]

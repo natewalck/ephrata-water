@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 from pipeline.common import now_utc
-from pipeline.fetch import echo, sdwis
+from pipeline.fetch import echo, sdwis, ucmr
 from pipeline.interpret import interpret
 
 SITE_DATA = Path(__file__).parent.parent / "site" / "data"
@@ -23,7 +23,8 @@ def main() -> int:
     sources: dict[str, dict] = {}
     raw: dict[str, dict] = {}
 
-    for name, fetcher in {"sdwis": sdwis.fetch, "echo": echo.fetch}.items():
+    fetchers = {"sdwis": sdwis.fetch, "echo": echo.fetch, "ucmr5": ucmr.fetch}
+    for name, fetcher in fetchers.items():
         # Broad catch on purpose: upstream shape drift raises KeyError and
         # friends, and any of those must degrade one source, not the build.
         try:
@@ -34,7 +35,7 @@ def main() -> int:
             sources[name] = {"ok": False, "error": str(e), "retrieved_at": now_utc()}
 
     try:
-        data = interpret(raw.get("sdwis"), raw.get("echo"))
+        data = interpret(raw.get("sdwis"), raw.get("echo"), raw.get("ucmr5"))
     except Exception as e:  # noqa: BLE001
         print(f"warning: interpret failed: {e}", file=sys.stderr)
         data = {}

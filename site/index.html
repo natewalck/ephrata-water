@@ -25,8 +25,26 @@
     annual report, see the Ephrata Area Joint Authority link below.</p></noscript>
   </section>
 
+  <section id="reporting" class="card reporting" aria-label="How current is this data" hidden></section>
+
   <section aria-label="Water system facts">
     <div id="tiles" class="tiles"></div>
+  </section>
+
+  <section id="results-card" class="card" hidden>
+    <h2>What was tested, and what they found</h2>
+    <p class="section-note">Lead is measured at household taps every few years. EPA’s “action
+    level” is the point where a utility must take corrective action, and results are reported
+    as the 90th percentile of the samples collected.</p>
+    <div id="results"></div>
+  </section>
+
+  <section id="pfas-card" class="card" hidden>
+    <h2>PFAS and other unregulated contaminants</h2>
+    <p class="section-note">In 2024–2025, EPA required most water systems to test for 29 PFAS
+    (“forever chemicals”) and lithium. These are the measured results for this system’s
+    treated water.</p>
+    <div id="pfas"></div>
   </section>
 
   <section class="card">
@@ -35,6 +53,17 @@
     requirement — most are paperwork (a late test or report), not unsafe water. Health-based
     violations, where a measured level actually exceeded a legal limit, are marked distinctly.</p>
     <ol id="violations" class="violations"></ol>
+  </section>
+
+  <section class="card">
+    <h2>What the public can and cannot see</h2>
+    <p class="section-note">The only measured results published in machine-readable federal
+    data are lead and copper (every few years) and the 2024–25 PFAS survey above. Routine
+    results for everything else — bacteria, disinfection byproducts, nitrates and more — are
+    reported to regulators but not published anywhere a program can read: Pennsylvania’s
+    open-data feed of sample results has not been updated since March 2021, and the
+    authority’s own reports are not machine-readable.</p>
+    <div id="transparency"></div>
   </section>
 
   <section class="card">

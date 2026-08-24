@@ -15,7 +15,8 @@ TABLES = {
     "facilities": "WATER_SYSTEM_FACILITY",
     "violations": "VIOLATION",
     "enforcement": "ENFORCEMENT_ACTION",
-    "lcr_samples": "LCR_SAMPLE_RESULT",
+    "lcr_samples": "LCR_SAMPLE",
+    "lcr_sample_results": "LCR_SAMPLE_RESULT",
     "geographic_areas": "GEOGRAPHIC_AREA",
 }
 
