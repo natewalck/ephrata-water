@@ -181,6 +181,145 @@ function renderPfas(p) {
   if (p.note) mount.append(el("p", "footnote", p.note));
 }
 
+// Site names arrive as "703 Blue Bell Laundry": lead with the place, keep the code.
+const siteName = (s) => {
+  const m = /^(\d{3})\s+(.+)$/.exec(s ?? "");
+  return m ? `${m[2]} (site ${m[1]})` : s;
+};
+
+function renderRtk(r) {
+  if (!r?.verdict) return;
+  document.getElementById("rtk").hidden = false;
+  const s = STATUS[r.verdict.status] ?? STATUS.unknown;
+  const card = document.getElementById("rtk-verdict");
+  card.classList.add(r.verdict.status);
+  const line = el("p", "status-line");
+  const icon = el("span", null, s.icon);
+  icon.setAttribute("aria-hidden", "true");
+  line.append(icon, el("span", null, `Lab results, ${fmtDate(r.bacteria.first)} – ${fmtDate(r.bacteria.last)}`));
+  card.append(line, el("p", "headline", r.verdict.headline));
+  card.append(el("p", "asof",
+    `${r.samples} lab samples obtained through a Right-to-Know Law request to Ephrata Borough, ` +
+    "answered August 25, 2026. Results were read automatically from the lab's PDF reports " +
+    "(M.J. Reider Associates, PA DEP lab #06-00003) and compared with federal limits by this site, " +
+    "not by the authority."));
+
+  // Bacteria: counts, then each positive with its follow-up outcome.
+  const b = r.bacteria;
+  const bm = document.getElementById("rtk-bacteria");
+  const tiles = el("div", "tiles");
+  for (const [label, value] of [["Routine samples", b.routine_samples], ["Sites", b.sites],
+    ["Positive results", b.positives.length]]) {
+    const t = el("div", "tile");
+    t.append(el("p", "label", label), el("p", "value", String(value)));
+    tiles.append(t);
+  }
+  bm.append(tiles);
+  if (b.positives.length) {
+    const ul = el("ul", "events");
+    for (const p of b.positives) {
+      const li = el("li");
+      const head = el("div", "viol-head");
+      head.append(el("span", "viol-what", `${siteName(p.name)} — ${p.ecoli ? "E. coli" : "total coliform"} found`));
+      const clear = p.repeats > 0 && p.repeats_clear;
+      head.append(chip(clear ? "resolved" : "health", clear ? "Re-tested clear" : "Follow-up not clear"));
+      head.append(el("span", "viol-date", fmtDate(p.date)));
+      li.append(head);
+      li.append(el("p", "viol-explainer", p.repeats
+        ? `${p.repeats} repeat samples on ${fmtDate(p.repeat_date)} were all ${clear ? "clear" : "not clear"}.`
+        : "No repeat samples appear in the records provided."));
+      ul.append(li);
+    }
+    bm.append(ul);
+    bm.append(el("p", "footnote",
+      "A single E. coli result that re-tests clear is not a violation under EPA's coliform rule, " +
+      "but it is the kind of result residents are rarely told about. Whether the authority " +
+      "issued a public notice is not in these records."));
+  }
+  const det = el("details");
+  det.append(el("summary", null, "All sites tested"));
+  const tbl = el("table", "plain-table");
+  const hr = el("tr");
+  for (const h of ["Site", "Tests", "Positive"]) hr.append(el("th", null, h));
+  tbl.append(hr);
+  for (const st of b.by_site) {
+    const tr = el("tr");
+    tr.append(el("td", null, siteName(st.name) || `site ${st.site}`));
+    tr.append(el("td", "num", String(st.tests)), el("td", "num", String(st.positives)));
+    tbl.append(tr);
+  }
+  det.append(tbl);
+  bm.append(det);
+
+  // Health limits: detected ones get a meter, the rest fold into one line.
+  const hm = document.getElementById("rtk-health");
+  const detected = r.health.filter((e) => e.detected);
+  const nd = r.health.filter((e) => !e.detected);
+  for (const e of detected) {
+    const head = el("div", "viol-head");
+    head.append(el("h3", "contaminant", e.label));
+    if (e.max_pct >= 100) head.append(chip("over", "Above the limit"));
+    hm.append(head);
+    hm.append(el("p", "limit-note", `Federal limit: ${e.limit} ${e.unit}`));
+    hm.append(meterRow("Highest result", e.max_pct, `${e.max.display} — ${e.max_pct}% of the limit`));
+    hm.append(el("p", "result-caption", e.results.filter((x) => x.tap)
+      .map((x) => `${siteName(x.location)}, ${fmtDate(x.date)}: ${x.display}`).join(". ") + "."));
+  }
+  if (detected.some((e) => e.unit === "ng/L")) hm.append(el("p", "footnote", r.pfas_note));
+  if (nd.length) {
+    const d = el("details");
+    d.append(el("summary", null, `${nd.length} more regulated contaminants were tested and not detected`));
+    const ul = el("ul", "monitored");
+    for (const e of nd) ul.append(el("li", null, `${e.label} (limit ${e.limit} ${e.unit}, ${e.tap_samples} samples)`));
+    d.append(ul);
+    hm.append(d);
+  }
+
+  // Aesthetic: raw vs finished per plant.
+  const am = document.getElementById("rtk-aesthetic");
+  for (const e of r.aesthetic) {
+    if (!e.by_plant.length) continue;
+    const head = el("div", "viol-head");
+    head.append(el("h3", "contaminant", e.label));
+    if (e.max_pct >= 100) head.append(chip("open", "Above the guideline in treated water"));
+    am.append(head);
+    am.append(el("p", "limit-note", `Guideline: ${e.limit} ${e.unit}`));
+    for (const p of e.by_plant) {
+      const short = p.name.replace(/ \(.*\)$/, "");
+      if (p.raw) {
+        const row = meterRow(`${short}, untreated`, p.raw.pct, `${p.raw.display} — ${p.raw.pct}%`);
+        row.querySelector(".meter").className = "meter raw";
+        am.append(row);
+      }
+      am.append(p.finished
+        ? meterRow(`${short}, treated`, p.finished.pct, `${p.finished.display} — ${p.finished.pct}%`)
+        : meterRow(`${short}, treated`, 0, "Not detected"));
+    }
+  }
+  if (r.hardness) {
+    am.append(el("h3", "contaminant", "Hardness"));
+    am.append(el("p", "result-caption",
+      `Treated water measured ${r.hardness.min}–${r.hardness.max} mg/L as calcium carbonate. ` +
+      "Anything over 180 counts as “very hard” on the USGS scale: expect scale in kettles and " +
+      "more soap needed. There is no health limit."));
+  }
+
+  // Not tap water: one collapsed block per location.
+  const nm = document.getElementById("rtk-not-tap");
+  for (const loc of r.not_tap) {
+    const d = el("details");
+    d.append(el("summary", null, loc.location));
+    const ul = el("ul", "monitored");
+    for (const x of loc.results) {
+      ul.append(el("li", null, x.limit != null
+        ? `${x.label}: ${x.display} (${x.pct}% of the ${x.unit === "ng/L" ? "limit" : "guideline"} for tap water)`
+        : `${x.label}: ${x.display}`));
+    }
+    d.append(ul);
+    nm.append(d);
+  }
+}
+
 function renderTransparency(t) {
   const mount = document.getElementById("transparency");
   if (t.monitored?.length) {
@@ -257,6 +396,7 @@ function renderSources(meta) {
     sdwis: "EPA Safe Drinking Water Information System (Envirofacts)",
     echo: "EPA Enforcement and Compliance History Online (ECHO)",
     ucmr5: "EPA UCMR5 PFAS monitoring results",
+    rtk: "Lab reports from a Right-to-Know request to Ephrata Borough",
     interpret: "Data processing",
   };
   for (const [key, s] of Object.entries(meta.sources)) {
@@ -290,6 +430,7 @@ async function main() {
   try {
     if (data.reporting) renderReporting(data.reporting);
     if (data.system) renderTiles(data.system);
+    renderRtk(data.rtk ?? null);
     renderResults(data.results ?? null);
     renderPfas(data.pfas ?? null);
     renderViolations(data.violations ?? null);

@@ -157,3 +157,20 @@ a { color: var(--link); }
 .sources { list-style: none; margin: 12px 0 0; padding: 0; font-size: 13px; color: var(--muted); }
 .sources li { margin: 2px 0; }
 .loading { color: var(--muted); }
+
+/* Right-to-Know lab results. Raw (untreated) meters are muted: the state color
+   is reserved for water that actually reaches a tap. */
+/* Aesthetic guidelines are never a health finding: over-limit steps down to warning. */
+.aesthetic .meter.over { background: color-mix(in srgb, var(--status-warning) 16%, var(--surface-1)); }
+.aesthetic .meter.over .fill { background: var(--status-warning); }
+.meter.raw { background: color-mix(in srgb, var(--muted) 14%, var(--surface-1)); }
+.meter.raw .fill { background: var(--muted); }
+.events { list-style: none; margin: 12px 0 0; padding: 0; }
+.events li { border-top: 1px solid var(--hairline); padding: 12px 0; }
+.events li:first-child { border-top: none; }
+details { margin: 12px 0 0; font-size: 14px; color: var(--text-secondary); }
+details summary { cursor: pointer; font-weight: 600; color: var(--text-primary); }
+.plain-table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 8px 0 0; }
+.plain-table th, .plain-table td { text-align: left; padding: 4px 8px 4px 0; border-top: 1px solid var(--hairline); }
+.plain-table th { color: var(--muted); font-weight: 600; border-top: none; }
+.plain-table td.num { text-align: right; padding-right: 0; }
