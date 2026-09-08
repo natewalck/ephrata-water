@@ -31,6 +31,43 @@
     <div id="tiles" class="tiles"></div>
   </section>
 
+  <div id="rtk" hidden>
+    <section id="rtk-verdict" class="card verdict" aria-label="Lab results summary"></section>
+
+    <section class="card">
+      <h2>Bacteria testing across town</h2>
+      <p class="section-note">The authority samples about 25 fixed sites around the system
+      every few weeks for <em>total coliform</em> (harmless bacteria that signal something may
+      have gotten into the pipes) and <em>E. coli</em> (a sign of fecal contamination, which is
+      a health concern). Any positive result requires three repeat samples within 24 hours:
+      at the same tap, and at neighbors upstream and downstream.</p>
+      <div id="rtk-bacteria"></div>
+    </section>
+
+    <section class="card">
+      <h2>Chemicals with a federal health limit</h2>
+      <p class="section-note">Each bar shows the highest result in treated water compared with
+      the EPA maximum contaminant level. Under 100% means the water met the limit.</p>
+      <div id="rtk-health"></div>
+    </section>
+
+    <section class="card">
+      <h2>Taste, odor, and staining guidelines</h2>
+      <p class="section-note">These are EPA’s “secondary” standards: they cover how water
+      looks and tastes, not whether it is safe to drink. Water is shown before and after
+      treatment at each plant so you can see what treatment removes.</p>
+      <div id="rtk-aesthetic" class="aesthetic"></div>
+    </section>
+
+    <section class="card">
+      <h2>Water that is not tap water</h2>
+      <p class="section-note">The lab packet also covers untreated creek and well water and
+      the salty waste stream from the Well #4 filtration process. These are shown for
+      completeness; none of them reach a tap.</p>
+      <div id="rtk-not-tap"></div>
+    </section>
+  </div>
+
   <section id="results-card" class="card" hidden>
     <h2>What was tested, and what they found</h2>
     <p class="section-note">Lead is measured at household taps every few years. EPA’s “action
@@ -62,7 +99,9 @@
     results for everything else — bacteria, disinfection byproducts, nitrates and more — are
     reported to regulators but not published anywhere a program can read: Pennsylvania’s
     open-data feed of sample results has not been updated since March 2021, and the
-    authority’s own reports are not machine-readable.</p>
+    authority’s own reports are not machine-readable. The lab results above were obtained
+    by a Right-to-Know Law request to Ephrata Borough and cover a single sampling window;
+    they are not an ongoing feed.</p>
     <div id="transparency"></div>
   </section>
 

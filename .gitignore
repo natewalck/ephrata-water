@@ -3,3 +3,5 @@ __pycache__/
 site/data/
 .pytest_cache/
 .ruff_cache/
+# RTK response PDFs contain the requester's home address; commit the parsed JSON only.
+*.pdf
